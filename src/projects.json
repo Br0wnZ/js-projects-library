@@ -1,0 +1,122 @@
+[
+  {
+    "id": "calculadora-interactiva",
+    "title": "Calculadora Interactiva",
+    "description": "Una calculadora moderna con funciones avanzadas, construida completamente en Vanilla JavaScript con diseño responsive y accesible.",
+    "fullDescription": "Esta calculadora interactiva representa un ejemplo perfecto de cómo JavaScript puro puede crear interfaces complejas y funcionales. Incluye operaciones básicas y avanzadas, historial de cálculos, modo científico y soporte completo para teclado. El diseño responsive garantiza una experiencia óptima en cualquier dispositivo.",
+    "link": "https://calculator-demo.vercel.app",
+    "github": "https://github.com/usuario/calculator-js",
+    "technologies": ["JavaScript", "CSS3", "HTML5", "LocalStorage"],
+    "features": [
+      "Operaciones matemáticas básicas y avanzadas",
+      "Historial de cálculos persistente",
+      "Modo científico con funciones trigonométricas",
+      "Soporte completo para navegación por teclado",
+      "Diseño responsive y accesible",
+      "Tema claro/oscuro automático"
+    ],
+    "category": "Utilidades",
+    "difficulty": "Intermedio",
+    "completionDate": "2024-12-15"
+  },
+  {
+    "id": "todo-app-avanzada",
+    "title": "Todo App Avanzada",
+    "description": "Aplicación de gestión de tareas con drag & drop, categorías, filtros y persistencia local. Interfaz intuitiva y completamente funcional.",
+    "fullDescription": "Una aplicación de gestión de tareas que va más allá de lo básico. Implementa funcionalidades avanzadas como drag & drop para reordenar tareas, sistema de categorías, filtros inteligentes y persistencia local. La interfaz está diseñada para maximizar la productividad del usuario.",
+    "link": "https://todo-advanced.netlify.app",
+    "github": "https://github.com/usuario/todo-vanilla-js",
+    "technologies": ["JavaScript", "Drag & Drop API", "LocalStorage", "CSS Grid"],
+    "features": [
+      "Drag & drop para reordenar tareas",
+      "Sistema de categorías y etiquetas",
+      "Filtros por estado, fecha y prioridad",
+      "Persistencia local automática",
+      "Notificaciones de recordatorio",
+      "Estadísticas de productividad"
+    ],
+    "category": "Productividad",
+    "difficulty": "Avanzado",
+    "completionDate": "2024-11-20"
+  },
+  {
+    "id": "generador-paletas",
+    "title": "Generador de Paletas",
+    "description": "Herramienta para generar paletas de colores armoniosas con exportación en múltiples formatos y vista previa en tiempo real.",
+    "fullDescription": "Herramienta especializada para diseñadores y desarrolladores que necesitan crear paletas de colores coherentes. Utiliza algoritmos de teoría del color para generar combinaciones armoniosas, con vista previa en tiempo real y exportación en múltiples formatos profesionales.",
+    "link": "https://color-palette-gen.vercel.app",
+    "github": "https://github.com/usuario/color-palette-generator",
+    "technologies": ["JavaScript", "Canvas API", "Color Theory", "File API"],
+    "features": [
+      "Generación basada en teoría del color",
+      "Vista previa en tiempo real",
+      "Exportación en CSS, SCSS, JSON",
+      "Paletas complementarias y análogas",
+      "Selector de color avanzado",
+      "Historial de paletas generadas"
+    ],
+    "category": "Diseño",
+    "difficulty": "Intermedio",
+    "completionDate": "2024-10-30"
+  },
+  {
+    "id": "weather-dashboard",
+    "title": "Weather Dashboard",
+    "description": "Panel meteorológico con geolocalización, pronóstico extendido, gráficos interactivos y múltiples ciudades.",
+    "fullDescription": "Dashboard meteorológico completo que combina datos en tiempo real con una interfaz intuitiva. Utiliza APIs meteorológicas para mostrar condiciones actuales, pronósticos y tendencias históricas con gráficos interactivos y mapas dinámicos.",
+    "link": "https://weather-js-dashboard.netlify.app",
+    "github": "https://github.com/usuario/weather-dashboard-js",
+    "technologies": ["JavaScript", "Weather API", "Chart.js", "Geolocation API"],
+    "features": [
+      "Datos meteorológicos en tiempo real",
+      "Geolocalización automática",
+      "Pronóstico extendido de 7 días",
+      "Gráficos de tendencias interactivos",
+      "Múltiples ubicaciones guardadas",
+      "Alertas meteorológicas"
+    ],
+    "category": "Datos",
+    "difficulty": "Avanzado",
+    "completionDate": "2024-09-15"
+  },
+  {
+    "id": "canvas-drawing-app",
+    "title": "Canvas Drawing App",
+    "description": "Aplicación de dibujo con múltiples herramientas, capas, deshacer/rehacer y exportación de imágenes en alta calidad.",
+    "fullDescription": "Aplicación de dibujo digital que demuestra el poder del Canvas API. Incluye un conjunto completo de herramientas de dibujo, sistema de capas, historial de acciones y capacidades de exportación profesionales.",
+    "link": "https://canvas-draw-app.vercel.app",
+    "github": "https://github.com/usuario/canvas-drawing-app",
+    "technologies": ["JavaScript", "Canvas API", "File API", "Touch Events"],
+    "features": [
+      "Múltiples herramientas de dibujo",
+      "Sistema de capas avanzado",
+      "Deshacer/rehacer ilimitado",
+      "Soporte para dispositivos táctiles",
+      "Exportación en alta resolución",
+      "Pinceles personalizables"
+    ],
+    "category": "Creatividad",
+    "difficulty": "Avanzado",
+    "completionDate": "2024-08-20"
+  },
+  {
+    "id": "music-player",
+    "title": "Music Player",
+    "description": "Reproductor de música con playlist, visualización de ondas, controles avanzados y soporte para múltiples formatos.",
+    "fullDescription": "Reproductor de música web completo que utiliza la Web Audio API para ofrecer una experiencia audio premium. Incluye visualizaciones en tiempo real, gestión de playlists y controles avanzados de audio.",
+    "link": "https://music-player-js.netlify.app",
+    "github": "https://github.com/usuario/vanilla-music-player",
+    "technologies": ["JavaScript", "Web Audio API", "File API", "IndexedDB"],
+    "features": [
+      "Reproducción de múltiples formatos",
+      "Visualización de ondas en tiempo real",
+      "Gestión de playlists",
+      "Ecualizador gráfico",
+      "Modo aleatorio y repetición",
+      "Almacenamiento local de biblioteca"
+    ],
+    "category": "Multimedia",
+    "difficulty": "Avanzado",
+    "completionDate": "2024-07-10"
+  }
+]

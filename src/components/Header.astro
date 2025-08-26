@@ -1,0 +1,90 @@
+<header 
+  id="main-header"
+  class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-3 shadow-sm bg-light-surface/90 dark:bg-dark-surface/90 border-b border-light-border/30 dark:border-dark-border/30 backdrop-blur-md transition-all duration-500 ease-in-out"
+  style="transform: translateY(0); opacity: 1;"
+>
+  <h1 class="text-xl font-bold text-primary-600 dark:text-primary-400">📚 Vanilla JS Library</h1>
+  <button
+    id="theme-toggle"
+    class="p-2 rounded-lg  hover:scale-110 transition-all duration-200"
+    aria-label="Cambiar tema de color"
+  >
+    <span class="dark:hidden">🌙</span>
+    <span class="hidden dark:inline">☀️</span>
+  </button>
+
+  <script>
+    const btn = document.getElementById("theme-toggle");
+    const header = document.getElementById("main-header");
+    
+    if (btn) {
+      btn.addEventListener("click", () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        const newTheme = isDark ? "light" : "dark";
+        
+        document.documentElement.classList.toggle("dark", newTheme === "dark");
+        document.documentElement.classList.toggle("light", newTheme === "light");
+        
+        localStorage.setItem("theme", newTheme);
+      });
+    }
+
+    if (header) {
+      let lastScrollY = window.scrollY;
+      let isHeaderVisible = true;
+      let scrollTimeout: number;
+
+      function updateHeader() {
+        if (!header) return;
+        
+        const currentScrollY = window.scrollY;
+        const scrollDifference = currentScrollY - lastScrollY;
+        const scrollThreshold = 30;
+        
+        clearTimeout(scrollTimeout);
+        
+        if (scrollDifference > 5 && currentScrollY > scrollThreshold && isHeaderVisible) {
+          header.style.transform = 'translateY(-100%)';
+          header.style.opacity = '0';
+          isHeaderVisible = false;
+        }
+        else if ((scrollDifference < -5 || currentScrollY <= scrollThreshold) && !isHeaderVisible) {
+          header.style.transform = 'translateY(0)';
+          header.style.opacity = '1';
+          isHeaderVisible = true;
+        }
+        else if (currentScrollY === 0 && !isHeaderVisible) {
+          header.style.transform = 'translateY(0)';
+          header.style.opacity = '1';
+          isHeaderVisible = true;
+        }
+
+        scrollTimeout = window.setTimeout(() => {
+          lastScrollY = currentScrollY;
+        }, 10);
+      }
+
+      let ticking = false;
+      function requestTick() {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            updateHeader();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+
+      window.addEventListener('scroll', requestTick, { passive: true });
+      
+      window.addEventListener('resize', () => {
+        if (!isHeaderVisible && window.scrollY <= 80) {
+          header.style.transform = 'translateY(0)';
+          header.style.opacity = '1';
+          isHeaderVisible = true;
+        }
+      }, { passive: true });
+    }
+  </script>
+</header>
+</header>

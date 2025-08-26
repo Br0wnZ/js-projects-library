@@ -1,0 +1,225 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Button from "../components/Button.astro";
+import Badge from "../components/Badge.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+---
+
+<Layout title="Demostración de Colores - Vanilla JS Library">
+  <Header />
+
+  <main class="flex-1 p-8 pt-12">
+    <div class="max-w-6xl mx-auto space-y-12">
+      
+      
+      <section class="text-center">
+        <h1 class="text-4xl font-bold text-light-text dark:text-dark-text mb-4">
+          Paleta de Colores del Tema
+        </h1>
+        <p class="text-lg text-light-muted dark:text-dark-muted max-w-2xl mx-auto">
+          Demostración de la paleta de colores personalizada diseñada siguiendo las mejores prácticas de accesibilidad.
+        </p>
+      </section>
+
+      
+      <section class="bg-light-surface dark:bg-dark-surface rounded-2xl p-8 border border-light-border dark:border-dark-border">
+        <h2 class="text-2xl font-semibold text-light-text dark:text-dark-text mb-6">Colores Principales</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          
+          <div class="space-y-3">
+            <h3 class="font-medium text-light-text dark:text-dark-text">Primary</h3>
+            <div class="space-y-2">
+              <div class="h-12 bg-primary-300 rounded-lg flex items-center justify-center text-primary-900 text-sm font-medium">300</div>
+              <div class="h-12 bg-primary-500 rounded-lg flex items-center justify-center text-white text-sm font-medium">500</div>
+              <div class="h-12 bg-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-medium">700</div>
+            </div>
+          </div>
+
+          
+          <div class="space-y-3">
+            <h3 class="font-medium text-light-text dark:text-dark-text">Secondary</h3>
+            <div class="space-y-2">
+              <div class="h-12 bg-secondary-300 rounded-lg flex items-center justify-center text-secondary-900 text-sm font-medium">300</div>
+              <div class="h-12 bg-secondary-500 rounded-lg flex items-center justify-center text-white text-sm font-medium">500</div>
+              <div class="h-12 bg-secondary-700 rounded-lg flex items-center justify-center text-white text-sm font-medium">700</div>
+            </div>
+          </div>
+
+          
+          <div class="space-y-3">
+            <h3 class="font-medium text-light-text dark:text-dark-text">Tertiary</h3>
+            <div class="space-y-2">
+              <div class="h-12 bg-tertiary-300 rounded-lg flex items-center justify-center text-tertiary-900 text-sm font-medium">300</div>
+              <div class="h-12 bg-tertiary-500 rounded-lg flex items-center justify-center text-white text-sm font-medium">500</div>
+              <div class="h-12 bg-tertiary-700 rounded-lg flex items-center justify-center text-white text-sm font-medium">700</div>
+            </div>
+          </div>
+
+          
+          <div class="space-y-3">
+            <h3 class="font-medium text-light-text dark:text-dark-text">Accent</h3>
+            <div class="space-y-2">
+              <div class="h-12 bg-accent-300 rounded-lg flex items-center justify-center text-accent-900 text-sm font-medium">300</div>
+              <div class="h-12 bg-accent-500 rounded-lg flex items-center justify-center text-white text-sm font-medium">500</div>
+              <div class="h-12 bg-accent-700 rounded-lg flex items-center justify-center text-white text-sm font-medium">700</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      
+      <section class="bg-light-surface dark:bg-dark-surface rounded-2xl p-8 border border-light-border dark:border-dark-border">
+        <h2 class="text-2xl font-semibold text-light-text dark:text-dark-text mb-6">Colores de Estado</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          
+          <div class="space-y-3">
+            <h3 class="font-medium text-light-text dark:text-dark-text">Success</h3>
+            <div class="h-16 bg-success-500 rounded-lg flex items-center justify-center text-white font-medium">
+              ✓ Éxito
+            </div>
+          </div>
+
+          
+          <div class="space-y-3">
+            <h3 class="font-medium text-light-text dark:text-dark-text">Warning</h3>
+            <div class="h-16 bg-warning-500 rounded-lg flex items-center justify-center text-white font-medium">
+              ⚠ Advertencia
+            </div>
+          </div>
+
+          
+          <div class="space-y-3">
+            <h3 class="font-medium text-light-text dark:text-dark-text">Error</h3>
+            <div class="h-16 bg-error-500 rounded-lg flex items-center justify-center text-white font-medium">
+              ✕ Error
+            </div>
+          </div>
+
+          
+          <div class="space-y-3">
+            <h3 class="font-medium text-light-text dark:text-dark-text">Info</h3>
+            <div class="h-16 bg-info-500 rounded-lg flex items-center justify-center text-white font-medium">
+              ℹ Información
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      
+      <section class="bg-light-surface dark:bg-dark-surface rounded-2xl p-8 border border-light-border dark:border-dark-border">
+        <h2 class="text-2xl font-semibold text-light-text dark:text-dark-text mb-6">Componentes de Botón</h2>
+        
+        <div class="space-y-6">
+          
+          
+          <div>
+            <h3 class="font-medium text-light-text dark:text-dark-text mb-3">Variantes</h3>
+            <div class="flex flex-wrap gap-3">
+              <Button variant="primary">Primary</Button>
+              <Button variant="secondary">Secondary</Button>
+              <Button variant="tertiary">Tertiary</Button>
+              <Button variant="accent">Accent</Button>
+            </div>
+          </div>
+
+          
+          <div>
+            <h3 class="font-medium text-light-text dark:text-dark-text mb-3">Estados</h3>
+            <div class="flex flex-wrap gap-3">
+              <Button variant="success">Success</Button>
+              <Button variant="warning">Warning</Button>
+              <Button variant="error">Error</Button>
+              <Button variant="info">Info</Button>
+            </div>
+          </div>
+
+          
+          <div>
+            <h3 class="font-medium text-light-text dark:text-dark-text mb-3">Tamaños</h3>
+            <div class="flex flex-wrap items-center gap-3">
+              <Button variant="primary" size="sm">Pequeño</Button>
+              <Button variant="primary" size="md">Mediano</Button>
+              <Button variant="primary" size="lg">Grande</Button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      
+      <section class="bg-light-surface dark:bg-dark-surface rounded-2xl p-8 border border-light-border dark:border-dark-border">
+        <h2 class="text-2xl font-semibold text-light-text dark:text-dark-text mb-6">Componentes Badge</h2>
+        
+        <div class="space-y-6">
+          
+          
+          <div>
+            <h3 class="font-medium text-light-text dark:text-dark-text mb-3">Variantes</h3>
+            <div class="flex flex-wrap gap-3">
+              <Badge variant="primary">Primary</Badge>
+              <Badge variant="secondary">Secondary</Badge>
+              <Badge variant="tertiary">Tertiary</Badge>
+              <Badge variant="accent">Accent</Badge>
+              <Badge variant="neutral">Neutral</Badge>
+            </div>
+          </div>
+
+          
+          <div>
+            <h3 class="font-medium text-light-text dark:text-dark-text mb-3">Estados</h3>
+            <div class="flex flex-wrap gap-3">
+              <Badge variant="success">Completado</Badge>
+              <Badge variant="warning">Pendiente</Badge>
+              <Badge variant="error">Fallido</Badge>
+              <Badge variant="info">Información</Badge>
+            </div>
+          </div>
+
+          
+          <div>
+            <h3 class="font-medium text-light-text dark:text-dark-text mb-3">Tamaños</h3>
+            <div class="flex flex-wrap items-center gap-3">
+              <Badge variant="primary" size="sm">Pequeño</Badge>
+              <Badge variant="primary" size="md">Mediano</Badge>
+              <Badge variant="primary" size="lg">Grande</Badge>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      
+      <section class="bg-light-surface dark:bg-dark-surface rounded-2xl p-8 border border-light-border dark:border-dark-border">
+        <h2 class="text-2xl font-semibold text-light-text dark:text-dark-text mb-6">Nueva Tarjeta de Proyecto</h2>
+        
+        <div class="max-w-sm mx-auto">
+          <ProjectCard 
+            id="ejemplo-proyecto"
+            title="Ejemplo de Proyecto"
+            description="Esta es una demostración del nuevo diseño de tarjeta con gradientes, iconos y botones de acción. Incluye efectos de hover y una mejor experiencia visual."
+            link="https://ejemplo-proyecto.vercel.app"
+            github="https://github.com/usuario/ejemplo-proyecto"
+          />
+        </div>
+      </section>
+
+      
+      <section class="text-center">
+        <Button variant="primary" href="/">
+          ← Volver al Inicio
+        </Button>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

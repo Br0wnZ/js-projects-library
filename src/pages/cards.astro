@@ -1,0 +1,163 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import Button from "../components/Button.astro";
+
+const demoProjects = [
+  {
+    id: "calculadora-demo",
+    title: "Calculadora Interactiva",
+    description: "Una calculadora moderna con funciones avanzadas, construida completamente en Vanilla JavaScript con diseño responsive y accesible.",
+    link: "https://calculator-demo.vercel.app",
+    github: "https://github.com/usuario/calculator-js"
+  },
+  {
+    id: "todo-demo",
+    title: "Todo App Avanzada",
+    description: "Aplicación de gestión de tareas con drag & drop, categorías, filtros y persistencia local.",
+    link: "https://todo-advanced.netlify.app",
+    github: "https://github.com/usuario/todo-vanilla-js"
+  },
+  {
+    id: "weather-demo",
+    title: "Weather Dashboard",
+    description: "Panel meteorológico con geolocalización, pronóstico extendido y gráficos interactivos.",
+    link: "https://weather-js-dashboard.netlify.app",
+    github: "https://github.com/usuario/weather-dashboard-js"
+  },
+  {
+    id: "canvas-demo",
+    title: "Canvas Drawing App",
+    description: "Aplicación de dibujo con múltiples herramientas, capas y exportación de imágenes en alta calidad.",
+    link: "https://canvas-draw-app.vercel.app",
+    github: "https://github.com/usuario/canvas-drawing-app"
+  }
+];
+---
+
+<Layout title="Demostración de Tarjetas - Vanilla JS Library">
+  <Header />
+
+  <main class="flex-1 p-8 pt-12">
+    <div class="max-w-6xl mx-auto space-y-12">
+      
+      
+      <section class="text-center">
+        <h1 class="text-4xl font-bold text-light-text dark:text-dark-text mb-4">
+          🎨 Nuevas Tarjetas de Proyecto
+        </h1>
+        <p class="text-lg text-light-muted dark:text-dark-muted max-w-2xl mx-auto mb-8">
+          Diseño renovado con gradientes, iconos y botones de acción para una mejor experiencia de usuario.
+        </p>
+        <div class="flex justify-center">
+          <Button variant="primary" href="/">
+            ← Volver al Inicio
+          </Button>
+        </div>
+      </section>
+
+      
+      <section class="bg-light-surface dark:bg-dark-surface rounded-2xl p-8 border border-light-border dark:border-dark-border">
+        <h2 class="text-2xl font-semibold text-light-text dark:text-dark-text mb-6 text-center">Características del Nuevo Diseño</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <div class="text-center space-y-3">
+            <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center text-primary-600 dark:text-primary-400 mx-auto">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a4 4 0 004-4V5z"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-light-text dark:text-dark-text">Diseño Moderno</h3>
+            <p class="text-sm text-light-muted dark:text-dark-muted">Gradientes coloridos y efectos de hover suaves</p>
+          </div>
+
+          <div class="text-center space-y-3">
+            <div class="w-12 h-12 bg-secondary-100 dark:bg-secondary-900 rounded-lg flex items-center justify-center text-secondary-600 dark:text-secondary-400 mx-auto">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-light-text dark:text-dark-text">Interactividad</h3>
+            <p class="text-sm text-light-muted dark:text-dark-muted">Animaciones y efectos de brillo al interactuar</p>
+          </div>
+
+          <div class="text-center space-y-3">
+            <div class="w-12 h-12 bg-tertiary-100 dark:bg-tertiary-900 rounded-lg flex items-center justify-center text-tertiary-600 dark:text-tertiary-400 mx-auto">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-light-text dark:text-dark-text">Accesibilidad</h3>
+            <p class="text-sm text-light-muted dark:text-dark-muted">Focus states y navegación por teclado optimizada</p>
+          </div>
+
+        </div>
+      </section>
+
+      
+      <section>
+        <h2 class="text-2xl font-semibold text-light-text dark:text-dark-text mb-8 text-center">
+          Demostración en Vivo
+        </h2>
+        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {demoProjects.map((project) => (
+            <ProjectCard 
+              id={project.id}
+              title={project.title}
+              description={project.description}
+              link={project.link}
+              github={project.github}
+            />
+          ))}
+        </div>
+      </section>
+
+      
+      <section class="bg-light-surface dark:bg-dark-surface rounded-2xl p-8 border border-light-border dark:border-dark-border">
+        <h2 class="text-2xl font-semibold text-light-text dark:text-dark-text mb-6 text-center">¿Qué hay de nuevo?</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-light-text dark:text-dark-text flex items-center space-x-2">
+              <span class="w-6 h-6 bg-success-100 dark:bg-success-900 rounded-full flex items-center justify-center text-success-600 dark:text-success-400 text-sm">✓</span>
+              <span>Nuevas Características</span>
+            </h3>
+            <ul class="space-y-2 text-sm text-light-muted dark:text-dark-muted ml-8">
+              <li>• Gradiente decorativo superior</li>
+              <li>• Icono de código personalizado</li>
+              <li>• Dos botones de acción distintos</li>
+              <li>• Efecto de brillo en hover</li>
+              <li>• Animaciones más suaves</li>
+              <li>• Mejor jerarquía visual</li>
+              <li>• Separador visual sutil</li>
+            </ul>
+          </div>
+
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-light-text dark:text-dark-text flex items-center space-x-2">
+              <span class="w-6 h-6 bg-info-100 dark:bg-info-900 rounded-full flex items-center justify-center text-info-600 dark:text-info-400 text-sm">i</span>
+              <span>Mejoras de UX</span>
+            </h3>
+            <ul class="space-y-2 text-sm text-light-muted dark:text-dark-muted ml-8">
+              <li>• URLs separadas para demo y código</li>
+              <li>• Labels ARIA descriptivos</li>
+              <li>• Estados de focus mejorados</li>
+              <li>• Indicadores visuales claros</li>
+              <li>• Responsive design optimizado</li>
+              <li>• Truncado inteligente de texto</li>
+              <li>• Transiciones consistentes</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

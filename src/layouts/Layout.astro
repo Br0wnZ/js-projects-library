@@ -1,0 +1,138 @@
+---
+const { title = "Vanilla JS Library" } = Astro.props;
+---
+
+<html
+  lang="es"
+  class="bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta
+      name="description"
+      content="Una colección curada de proyectos y ejemplos en JavaScript puro, construida con Astro y Tailwind CSS."
+    />
+
+    <script is:inline>
+      (function () {
+        function getThemePreference() {
+          if (
+            typeof localStorage !== "undefined" &&
+            localStorage.getItem("theme")
+          ) {
+            return localStorage.getItem("theme");
+          }
+          return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+
+        const theme = getThemePreference();
+        const isDark = theme === "dark";
+        const html = document.documentElement;
+
+        html.classList[isDark ? "add" : "remove"]("dark");
+        html.classList[!isDark ? "add" : "remove"]("light");
+
+        html.style.visibility = "visible";
+
+        if (typeof localStorage !== "undefined") {
+          localStorage.setItem("theme", theme);
+        }
+
+        setTimeout(() => {
+          html.classList.add("theme-loaded");
+        }, 150);
+      })();
+    </script>
+    <style>
+      html {
+        visibility: hidden;
+      }
+
+      html.dark,
+      html.light {
+        visibility: visible !important;
+      }
+
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      html.theme-loaded,
+      html.theme-loaded * {
+        transition:
+          background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+          color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+          border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+          box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+
+        html {
+          scroll-behavior: auto;
+        }
+
+        html.theme-loaded,
+        html.theme-loaded * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen flex flex-col transition-colors duration-300 bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text pt-16"
+  >
+    <slot />
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.documentElement.classList.add("theme-loaded");
+
+        function applyTheme() {
+          const savedTheme = localStorage.getItem("theme");
+          const prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+          ).matches;
+          const isDark = savedTheme === "dark" || (!savedTheme && prefersDark);
+
+          document.documentElement.classList.toggle("dark", isDark);
+          document.documentElement.classList.toggle("light", !isDark);
+        }
+
+        applyTheme();
+
+        window
+          .matchMedia("(prefers-color-scheme: dark)")
+          .addEventListener("change", function (e) {
+            if (!localStorage.getItem("theme")) {
+              applyTheme();
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

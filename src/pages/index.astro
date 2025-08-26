@@ -1,0 +1,69 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import Footer from "../components/Footer.astro";
+import Button from "../components/Button.astro";
+import Badge from "../components/Badge.astro";
+import projects from "../projects.json";
+---
+
+<Layout title="Vanilla JS Library">
+  <Header />
+
+  <main class="flex-1 p-8 pt-12">
+    <div class="max-w-7xl mx-auto">
+      <section class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-light-text dark:text-dark-text mb-4">
+          📚 Vanilla JS Library
+        </h1>
+        <p
+          class="text-xl text-light-muted dark:text-dark-muted mb-6 max-w-2xl mx-auto"
+        >
+          Una colección curada de proyectos y ejemplos en JavaScript puro,
+          construida con Astro y Tailwind CSS.
+        </p>
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+          <Badge variant="primary">JavaScript Vanilla</Badge>
+          <Badge variant="secondary">Astro v5</Badge>
+          <Badge variant="tertiary">Tailwind CSS</Badge>
+          <Badge variant="success">Accesible</Badge>
+        </div>
+        <div class="flex flex-wrap justify-center gap-3">
+          <Button variant="primary" size="lg"> Explorar Proyectos </Button>
+          <Button variant="secondary" size="lg" href="/colors">
+            Ver Paleta de Colores
+          </Button>
+          <Button variant="tertiary" size="lg" href="/cards">
+            Demo de Tarjetas
+          </Button>
+        </div>
+      </section>
+
+      <section>
+        <h2
+          class="text-2xl font-semibold text-light-text dark:text-dark-text mb-6 text-center"
+        >
+          Proyectos Destacados
+        </h2>
+        <div
+          class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        >
+          {
+            projects.map((project) => (
+              <ProjectCard
+                id={project.id}
+                title={project.title}
+                description={project.description}
+                link={project.link}
+                github={project.github}
+              />
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

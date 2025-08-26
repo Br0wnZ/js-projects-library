@@ -1,0 +1,313 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import Button from "../../components/Button.astro";
+import Badge from "../../components/Badge.astro";
+import projects from "../../projects.json";
+
+export async function getStaticPaths() {
+  const projectsData = projects as any[];
+  return projectsData.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+
+const difficultyColors = {
+  Principiante: "success",
+  Intermedio: "warning",
+  Avanzado: "error",
+};
+
+const categoryColors = {
+  Utilidades: "primary",
+  Productividad: "secondary",
+  Diseño: "tertiary",
+  Datos: "info",
+  Creatividad: "accent",
+  Multimedia: "primary",
+};
+---
+
+<Layout title={`${project.title} - Vanilla JS Library`}>
+  <Header />
+
+  <main class="flex-1 p-8 pt-12">
+    <div class="max-w-4xl mx-auto">
+      <nav class="mb-8" aria-label="Breadcrumb">
+        <ol
+          class="flex items-center space-x-2 text-sm text-light-muted dark:text-dark-muted"
+        >
+          <li>
+            <a
+              href="/"
+              class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+            >
+              Inicio
+            </a>
+          </li>
+          <li>
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"></path>
+            </svg>
+          </li>
+          <li class="text-light-text dark:text-dark-text font-medium">
+            {project.title}
+          </li>
+        </ol>
+      </nav>
+
+      <section class="mb-12">
+        <div class="text-center space-y-6">
+          <div
+            class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-primary-500 via-secondary-500 to-tertiary-500 flex items-center justify-center text-white text-3xl font-bold shadow-lg"
+          >
+            {project.title.charAt(0)}
+          </div>
+
+          <h1
+            id="project-title"
+            class="text-5xl font-bold text-light-text dark:text-dark-text transition-all duration-700 transform"
+          >
+            {project.title}
+          </h1>
+
+          <div class="flex flex-wrap justify-center gap-3">
+            <Badge variant={categoryColors[project.category] || "neutral"}>
+              {project.category}
+            </Badge>
+            <Badge variant={difficultyColors[project.difficulty] || "neutral"}>
+              {project.difficulty}
+            </Badge>
+            <Badge variant="info">
+              {
+                new Date(project.completionDate).toLocaleDateString("es-ES", {
+                  year: "numeric",
+                  month: "long",
+                })
+              }
+            </Badge>
+          </div>
+
+          <p
+            class="text-xl text-light-muted dark:text-dark-muted max-w-3xl mx-auto leading-relaxed"
+          >
+            {project.fullDescription}
+          </p>
+
+          <div class="flex flex-wrap justify-center gap-4">
+            <Button variant="primary" size="lg" href={project.link}>
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                ></path>
+              </svg>
+              Ver Proyecto Live
+            </Button>
+            <Button variant="secondary" size="lg" href={project.github}>
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 23.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"
+                ></path>
+              </svg>
+              Ver Código
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-8">
+          <section
+            class="bg-light-surface dark:bg-dark-surface rounded-2xl p-8 border border-light-border dark:border-dark-border"
+          >
+            <h2
+              class="text-2xl font-semibold text-light-text dark:text-dark-text mb-6 flex items-center"
+            >
+              <svg
+                class="w-6 h-6 mr-3 text-primary-600 dark:text-primary-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              Características Principales
+            </h2>
+            <ul class="space-y-3">
+              {
+                project.features.map((feature) => (
+                  <li class="flex items-start space-x-3">
+                    <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 flex-shrink-0" />
+                    <span class="text-light-text dark:text-dark-text">
+                      {feature}
+                    </span>
+                  </li>
+                ))
+              }
+            </ul>
+          </section>
+
+          <section
+            class="bg-light-surface dark:bg-dark-surface rounded-2xl p-8 border border-light-border dark:border-dark-border"
+          >
+            <h2
+              class="text-2xl font-semibold text-light-text dark:text-dark-text mb-6 flex items-center"
+            >
+              <svg
+                class="w-6 h-6 mr-3 text-secondary-600 dark:text-secondary-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+              </svg>
+              Tecnologías Utilizadas
+            </h2>
+            <div class="flex flex-wrap gap-3">
+              {
+                project.technologies.map((tech) => (
+                  <Badge variant="neutral" size="md">
+                    {tech}
+                  </Badge>
+                ))
+              }
+            </div>
+          </section>
+        </div>
+
+        <div class="space-y-6">
+          <section
+            class="bg-light-surface dark:bg-dark-surface rounded-2xl p-6 border border-light-border dark:border-dark-border"
+          >
+            <h3
+              class="text-lg font-semibold text-light-text dark:text-dark-text mb-4"
+            >
+              Información del Proyecto
+            </h3>
+            <div class="space-y-4">
+              <div>
+                <dt
+                  class="text-sm font-medium text-light-muted dark:text-dark-muted"
+                >
+                  Categoría
+                </dt>
+                <dd class="text-light-text dark:text-dark-text">
+                  {project.category}
+                </dd>
+              </div>
+              <div>
+                <dt
+                  class="text-sm font-medium text-light-muted dark:text-dark-muted"
+                >
+                  Dificultad
+                </dt>
+                <dd class="text-light-text dark:text-dark-text">
+                  {project.difficulty}
+                </dd>
+              </div>
+              <div>
+                <dt
+                  class="text-sm font-medium text-light-muted dark:text-dark-muted"
+                >
+                  Completado
+                </dt>
+                <dd class="text-light-text dark:text-dark-text">
+                  {
+                    new Date(project.completionDate).toLocaleDateString(
+                      "es-ES",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }
+                    )
+                  }
+                </dd>
+              </div>
+            </div>
+          </section>
+
+          <section
+            class="bg-light-surface dark:bg-dark-surface rounded-2xl p-6 border border-light-border dark:border-dark-border"
+          >
+            <h3
+              class="text-lg font-semibold text-light-text dark:text-dark-text mb-4"
+            >
+              Enlaces
+            </h3>
+            <div class="space-y-3">
+              <Button
+                variant="primary"
+                size="sm"
+                href={project.link}
+                class="w-full"
+              >
+                🌐 Proyecto Live
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                href={project.github}
+                class="w-full"
+              >
+                📂 Repositorio
+              </Button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <section class="mt-12 text-center">
+        <Button variant="primary" href="/"> ← Volver a Proyectos </Button>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+
+  <style>
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in-up {
+      animation: fade-in-up 0.6s ease-out;
+    }
+  </style>
+</Layout>
