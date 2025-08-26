@@ -27,43 +27,28 @@ import projects from "../projects.json";
           <Badge variant="primary">JavaScript Vanilla</Badge>
           <Badge variant="secondary">Astro v5</Badge>
           <Badge variant="tertiary">Tailwind CSS</Badge>
-          <Badge variant="success">Accesible</Badge>
         </div>
-        <div class="flex flex-wrap justify-center gap-3">
-          <Button variant="primary" size="lg"> Explorar Proyectos </Button>
-          <Button variant="secondary" size="lg" href="/colors">
-            Ver Paleta de Colores
-          </Button>
-          <Button variant="tertiary" size="lg" href="/cards">
-            Demo de Tarjetas
-          </Button>
-        </div>
-      </section>
 
-      <section>
-        <h2
-          class="text-2xl font-semibold text-light-text dark:text-dark-text mb-6 text-center"
-        >
-          Proyectos Destacados
-        </h2>
-        <div
-          class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-        >
-          {
-            projects.map((project) => (
-              <ProjectCard
-                id={project.id}
-                title={project.title}
-                description={project.description}
-                link={project.link}
-                github={project.github}
-              />
-            ))
-          }
-        </div>
+        <section>
+          <div
+            class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          >
+            {
+              projects.map((project) => (
+                <ProjectCard
+                  id={project.id}
+                  title={project.title}
+                  description={project.description}
+                  link={project.link}
+                  github={project.github}
+                />
+              ))
+            }
+          </div>
+        </section>
       </section>
     </div>
-  </main>
 
-  <Footer />
+    <Footer />
+  </main>
 </Layout>
