@@ -24,7 +24,7 @@
     "title": "Todo App Avanzada",
     "description": "Aplicación de gestión de tareas con drag & drop, categorías, filtros y persistencia local. Interfaz intuitiva y completamente funcional.",
     "fullDescription": "Una aplicación de gestión de tareas que va más allá de lo básico. Implementa funcionalidades avanzadas como drag & drop para reordenar tareas, sistema de categorías, filtros inteligentes y persistencia local. La interfaz está diseñada para maximizar la productividad del usuario.",
-    "link": "https://todo-advanced.netlify.app",
+    "link": "/apps/todo-app-avanzada",
     "github": "https://github.com/usuario/todo-vanilla-js",
     "technologies": ["JavaScript", "Drag & Drop API", "LocalStorage", "CSS Grid"],
     "features": [

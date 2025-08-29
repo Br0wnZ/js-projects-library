@@ -1,0 +1,174 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Header from "../../../components/Header.astro";
+import Footer from "../../../components/Footer.astro";
+---
+
+<Layout title="Todo App Avanzada - Vanilla JS Library">
+  <Header />
+  <main class="flex-1 p-8 pt-12 flex items-start justify-center">
+    <div class="w-full max-w-xl bg-light-surface dark:bg-dark-surface rounded-2xl shadow-lg p-4 sm:p-6">
+      <form id="todo-form" class="flex flex-col sm:flex-row gap-2 mb-4">
+        <input
+          id="todo-input"
+          type="text"
+          placeholder="Nueva tarea"
+          class="flex-1 p-2 rounded bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border"
+        />
+        <select
+          id="todo-category"
+          class="p-2 rounded bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border"
+        >
+          <option value="General">General</option>
+          <option value="Trabajo">Trabajo</option>
+          <option value="Personal">Personal</option>
+        </select>
+        <button
+          class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded"
+        >
+          Añadir
+        </button>
+      </form>
+
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+        <div class="flex gap-2" id="filters">
+          <button data-filter="all" class="filter-btn px-2 py-1 rounded bg-secondary-500 text-white">
+            Todas
+          </button>
+          <button data-filter="active" class="filter-btn px-2 py-1 rounded bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border">
+            Activas
+          </button>
+          <button data-filter="completed" class="filter-btn px-2 py-1 rounded bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border">
+            Completadas
+          </button>
+        </div>
+        <select
+          id="category-filter"
+          class="p-2 rounded bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border"
+        >
+          <option value="all">Todas las categorías</option>
+        </select>
+        <div id="stats" class="text-sm text-light-muted dark:text-dark-muted"></div>
+      </div>
+
+      <ul
+        id="todo-list"
+        class="space-y-2 min-h-[200px]" aria-label="Lista de tareas"
+      ></ul>
+    </div>
+  </main>
+  <Footer />
+  <script>
+    const form = document.getElementById('todo-form');
+    const input = document.getElementById('todo-input');
+    const categorySelect = document.getElementById('todo-category');
+    const list = document.getElementById('todo-list');
+    const filters = document.querySelectorAll('.filter-btn');
+    const stats = document.getElementById('stats');
+    const categoryFilter = document.getElementById('category-filter');
+
+    let tasks = JSON.parse(localStorage.getItem('advanced-todos') || '[]');
+    let currentFilter = 'all';
+    let currentCategory = 'all';
+    let draggedId = null;
+
+    function save() {
+      localStorage.setItem('advanced-todos', JSON.stringify(tasks));
+    }
+
+    function updateCategoryOptions() {
+      const categories = Array.from(new Set(tasks.map(t => t.category)));
+      categoryFilter.innerHTML = '<option value="all">Todas las categorías</option>';
+      categories.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        categoryFilter.appendChild(opt);
+      });
+    }
+
+    function render() {
+      list.innerHTML = '';
+      const filtered = tasks.filter(t => {
+        const statusOk =
+          currentFilter === 'all' ||
+          (currentFilter === 'active' && !t.completed) ||
+          (currentFilter === 'completed' && t.completed);
+        const categoryOk = currentCategory === 'all' || t.category === currentCategory;
+        return statusOk && categoryOk;
+      });
+      filtered.forEach(task => {
+        const li = document.createElement('li');
+        li.className = 'flex items-center gap-2 p-2 rounded bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border';
+        li.draggable = true;
+        li.dataset.id = task.id;
+        li.innerHTML = `\n          <input type="checkbox" class="checkbox" ${task.completed ? 'checked' : ''}/>\n          <span class="flex-1 ${task.completed ? 'line-through text-light-muted dark:text-dark-muted' : ''}">${task.text}</span>\n          <span class="text-xs px-2 py-1 rounded bg-secondary-500 text-white">${task.category}</span>\n          <button class="delete text-error-500">✕</button>\n        `;
+        list.appendChild(li);
+      });
+      stats.textContent = `${tasks.filter(t => t.completed).length}/${tasks.length} completadas`;
+      updateCategoryOptions();
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      tasks.push({ id: Date.now(), text, category: categorySelect.value, completed: false });
+      input.value = '';
+      save();
+      render();
+    });
+
+    list.addEventListener('click', e => {
+      const li = e.target.closest('li');
+      if (!li) return;
+      const id = Number(li.dataset.id);
+      if (e.target.classList.contains('checkbox')) {
+        const task = tasks.find(t => t.id === id);
+        task.completed = e.target.checked;
+        save();
+        render();
+      }
+      if (e.target.classList.contains('delete')) {
+        tasks = tasks.filter(t => t.id !== id);
+        save();
+        render();
+      }
+    });
+
+    list.addEventListener('dragstart', e => {
+      draggedId = Number(e.target.dataset.id);
+    });
+    list.addEventListener('dragover', e => {
+      e.preventDefault();
+    });
+    list.addEventListener('drop', e => {
+      e.preventDefault();
+      const target = e.target.closest('li');
+      if (!target) return;
+      const targetId = Number(target.dataset.id);
+      if (targetId === draggedId) return;
+      const srcIndex = tasks.findIndex(t => t.id === draggedId);
+      const targetIndex = tasks.findIndex(t => t.id === targetId);
+      tasks.splice(targetIndex, 0, tasks.splice(srcIndex, 1)[0]);
+      save();
+      render();
+    });
+
+    filters.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentFilter = btn.dataset.filter;
+        filters.forEach(b => b.classList.remove('bg-secondary-500', 'text-white'));
+        btn.classList.add('bg-secondary-500', 'text-white');
+        render();
+      });
+    });
+
+    categoryFilter.addEventListener('change', () => {
+      currentCategory = categoryFilter.value;
+      render();
+    });
+
+    render();
+  </script>
+</Layout>
