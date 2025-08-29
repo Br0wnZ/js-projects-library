@@ -4,7 +4,7 @@
     "title": "Calculadora Interactiva",
     "description": "Una calculadora moderna con funciones avanzadas, construida completamente en Vanilla JavaScript con diseño responsive y accesible.",
     "fullDescription": "Esta calculadora interactiva representa un ejemplo perfecto de cómo JavaScript puro puede crear interfaces complejas y funcionales. Incluye operaciones básicas y avanzadas, historial de cálculos, modo científico y soporte completo para teclado. El diseño responsive garantiza una experiencia óptima en cualquier dispositivo.",
-    "link": "https://calculator-demo.vercel.app",
+    "link": "/apps/calculadora-interactiva",
     "github": "https://github.com/usuario/calculator-js",
     "technologies": ["JavaScript", "CSS3", "HTML5", "LocalStorage"],
     "features": [
