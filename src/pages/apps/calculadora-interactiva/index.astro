@@ -1,0 +1,165 @@
+---
+---
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora Interactiva</title>
+</head>
+<body class="min-h-screen bg-light-bg dark:bg-dark-bg flex items-center justify-center p-4">
+  <a href="/" class="absolute top-4 left-4 text-primary-600 dark:text-primary-400 font-medium underline">Inicio</a>
+  <main class="w-full max-w-sm sm:max-w-md bg-light-surface dark:bg-dark-surface rounded-2xl shadow-lg p-4 sm:p-6">
+    <div id="display" class="mb-4 h-16 sm:h-20 text-right text-3xl sm:text-4xl font-mono p-2 rounded bg-light-border/30 dark:bg-dark-border/30 flex items-end justify-end" aria-live="polite">0</div>
+    <div class="grid grid-cols-4 gap-2 sm:gap-3">
+      <button id="clear" class="col-span-2 py-3 sm:py-4 rounded-lg bg-error-500 hover:bg-error-600 text-white font-semibold" aria-label="Limpiar pantalla">C</button>
+      <button data-op="/" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Dividir">÷</button>
+      <button data-op="*" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Multiplicar">×</button>
+
+      <button data-number="7" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">7</button>
+      <button data-number="8" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">8</button>
+      <button data-number="9" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">9</button>
+      <button data-op="-" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Restar">−</button>
+
+      <button data-number="4" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">4</button>
+      <button data-number="5" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">5</button>
+      <button data-number="6" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">6</button>
+      <button data-op="+" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Sumar">+</button>
+
+      <button data-number="1" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">1</button>
+      <button data-number="2" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">2</button>
+      <button data-number="3" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">3</button>
+      <button id="equal" class="row-span-2 py-3 sm:py-4 rounded-lg bg-primary-500 hover:bg-primary-600 text-white font-semibold" aria-label="Igual">=</button>
+
+      <button data-number="0" class="col-span-2 py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">0</button>
+      <button data-number="." class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold" aria-label="Punto decimal">.</button>
+    </div>
+
+    <section class="mt-6" aria-labelledby="history-heading">
+      <h2 id="history-heading" class="text-lg font-semibold text-light-text dark:text-dark-text mb-2">Historial</h2>
+      <ul id="history" class="max-h-40 overflow-y-auto space-y-1 text-sm text-light-muted dark:text-dark-muted"></ul>
+    </section>
+  </main>
+
+  <script>
+    const display = document.getElementById('display');
+    const historyList = document.getElementById('history');
+    let firstOperand = null;
+    let operator = null;
+    let waitingForSecond = false;
+
+    const calculations = {
+      '/': (a, b) => a / b,
+      '*': (a, b) => a * b,
+      '+': (a, b) => a + b,
+      '-': (a, b) => a - b,
+    };
+
+    function updateDisplay(value) {
+      display.textContent = value;
+    }
+
+    function inputDigit(digit) {
+      if (waitingForSecond) {
+        updateDisplay(digit);
+        waitingForSecond = false;
+      } else {
+        updateDisplay(display.textContent === '0' ? digit : display.textContent + digit);
+      }
+    }
+
+    function inputDecimal() {
+      if (waitingForSecond) {
+        updateDisplay('0.');
+        waitingForSecond = false;
+        return;
+      }
+      if (!display.textContent.includes('.')) {
+        updateDisplay(display.textContent + '.');
+      }
+    }
+
+    function handleOperator(nextOperator) {
+      const inputValue = parseFloat(display.textContent);
+
+      if (operator && waitingForSecond) {
+        operator = nextOperator;
+        return;
+      }
+
+      if (firstOperand === null) {
+        firstOperand = inputValue;
+      } else if (operator) {
+        const result = calculations[operator](firstOperand, inputValue);
+        addHistory(`${firstOperand} ${operator} ${inputValue} = ${result}`);
+        updateDisplay(String(result));
+        firstOperand = result;
+      }
+
+      waitingForSecond = true;
+      operator = nextOperator;
+    }
+
+    function handleEquals() {
+      const inputValue = parseFloat(display.textContent);
+      if (operator === null || waitingForSecond) return;
+      const result = calculations[operator](firstOperand, inputValue);
+      addHistory(`${firstOperand} ${operator} ${inputValue} = ${result}`);
+      updateDisplay(String(result));
+      firstOperand = result;
+      operator = null;
+    }
+
+    function clearCalculator() {
+      updateDisplay('0');
+      firstOperand = null;
+      operator = null;
+      waitingForSecond = false;
+    }
+
+    function addHistory(entry) {
+      const li = document.createElement('li');
+      li.textContent = entry;
+      historyList.prepend(li);
+      const stored = JSON.parse(localStorage.getItem('calc-history') || '[]');
+      stored.unshift(entry);
+      localStorage.setItem('calc-history', JSON.stringify(stored.slice(0, 10)));
+    }
+
+    function loadHistory() {
+      const stored = JSON.parse(localStorage.getItem('calc-history') || '[]');
+      stored.forEach(entry => {
+        const li = document.createElement('li');
+        li.textContent = entry;
+        historyList.appendChild(li);
+      });
+    }
+
+    function handleKey(e) {
+      if (/\d/.test(e.key)) {
+        inputDigit(e.key);
+      } else if (e.key === '.') {
+        inputDecimal();
+      } else if (Object.keys(calculations).includes(e.key)) {
+        handleOperator(e.key);
+      } else if (e.key === 'Enter') {
+        handleEquals();
+      } else if (e.key === 'Escape') {
+        clearCalculator();
+      }
+    }
+
+    document.querySelectorAll('[data-number]').forEach(btn => {
+      btn.addEventListener('click', () => inputDigit(btn.dataset.number));
+    });
+    document.querySelector('[data-number="."]').addEventListener('click', inputDecimal);
+    document.querySelectorAll('[data-op]').forEach(btn => {
+      btn.addEventListener('click', () => handleOperator(btn.dataset.op));
+    });
+    document.getElementById('equal').addEventListener('click', handleEquals);
+    document.getElementById('clear').addEventListener('click', clearCalculator);
+    window.addEventListener('keydown', handleKey);
+
+    loadHistory();
+  </script>
+</body>
+</html>
