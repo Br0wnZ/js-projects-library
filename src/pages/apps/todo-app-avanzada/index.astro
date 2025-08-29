@@ -47,6 +47,9 @@ import Footer from "../../../components/Footer.astro";
           class="p-2 rounded bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border"
         >
           <option value="all">Todas las categorías</option>
+          <option value="General">General</option>
+          <option value="Trabajo">Trabajo</option>
+          <option value="Personal">Personal</option>
         </select>
         <div id="stats" class="text-sm text-light-muted dark:text-dark-muted"></div>
       </div>
@@ -87,13 +90,10 @@ import Footer from "../../../components/Footer.astro";
     const stats = document.getElementById('stats');
     const categoryFilter = document.getElementById('category-filter');
 
-    // Null checks for DOM elements
     if (!form || !input || !categorySelect || !list || !stats || !categoryFilter) {
       console.error('Required DOM elements not found');
-      return;
     }
 
-    // Type definitions
     interface Task {
       id: number;
       text: string;
@@ -105,7 +105,6 @@ import Footer from "../../../components/Footer.astro";
     try {
       const storedTasks = localStorage.getItem('advanced-todos');
       const parsedTasks = storedTasks ? JSON.parse(storedTasks) : [];
-      // Validate task structure
       tasks = Array.isArray(parsedTasks) ? parsedTasks.filter(task => 
         task && 
         typeof task.id === 'number' && 
@@ -137,14 +136,27 @@ import Footer from "../../../components/Footer.astro";
 
     function updateCategoryOptions() {
       if (!categoryFilter) return;
-      
-      const categories = Array.from(new Set(tasks.map(t => t.category?.toString() || 'General')));
-      categoryFilter.innerHTML = '<option value="all">Todas las categorías</option>';
-      categories.forEach(cat => {
+      const defaultOptions = [
+        { value: 'all', label: 'Todas las categorías' },
+        { value: 'General', label: 'General' },
+        { value: 'Trabajo', label: 'Trabajo' },
+        { value: 'Personal', label: 'Personal' }
+      ];
+      categoryFilter.innerHTML = '';
+      defaultOptions.forEach(optData => {
         const opt = document.createElement('option');
-        opt.value = String(cat);
-        opt.textContent = String(cat);
+        opt.value = optData.value;
+        opt.textContent = optData.label;
         categoryFilter.appendChild(opt);
+      });
+      const categories = Array.from(new Set(tasks.map(t => t.category?.toString() || 'General')));
+      categories.forEach(cat => {
+        if (!defaultOptions.some(o => o.value === cat)) {
+          const opt = document.createElement('option');
+          opt.value = String(cat);
+          opt.textContent = String(cat);
+          categoryFilter.appendChild(opt);
+        }
       });
     }
 
@@ -157,7 +169,8 @@ import Footer from "../../../components/Footer.astro";
           currentFilter === 'all' ||
           (currentFilter === 'active' && !t.completed) ||
           (currentFilter === 'completed' && t.completed);
-        const categoryOk = currentCategory === 'all' || t.category === currentCategory;
+        // Filtrado correcto por categoría
+        const categoryOk = currentCategory === 'all' ? true : t.category === currentCategory;
         return statusOk && categoryOk;
       });
       filtered.forEach(task => {
@@ -170,36 +183,36 @@ import Footer from "../../../components/Footer.astro";
       });
       stats.textContent = `${tasks.filter(t => t.completed).length}/${tasks.length} completadas`;
       updateCategoryOptions();
+      if (categoryFilter) {
+        (categoryFilter as HTMLSelectElement).value = currentCategory;
+      }
     }
 
-    form.addEventListener('submit', e => {
+    form?.addEventListener('submit', e => {
       e.preventDefault();
       if (!input || !categorySelect) return;
-      
       const text = (input as HTMLInputElement).value.trim();
-      if (!text || text.length > 500) return; // Prevent empty or overly long tasks
-      
+      if (!text || text.length > 500) return;
       const category = (categorySelect as HTMLSelectElement).value;
       if (!category) return;
-      
       tasks.push({ id: Date.now(), text, category, completed: false });
       (input as HTMLInputElement).value = '';
       save();
+      if (categoryFilter && (categoryFilter as HTMLSelectElement).value === 'all') {
+        currentCategory = 'all';
+        (categoryFilter as HTMLSelectElement).value = 'all';
+      }
       render();
     });
 
-    list.addEventListener('click', e => {
+    list?.addEventListener('click', e => {
       if (!e.target) return;
-      
       const li = (e.target as Element).closest('li');
       if (!li) return;
-      
       const idAttr = li.dataset.id;
       if (!idAttr) return;
-      
       const id = Number(idAttr);
       if (isNaN(id)) return;
-      
       if ((e.target as Element).classList.contains('checkbox')) {
         const task = tasks.find(t => t.id === id);
         if (task) {
@@ -215,36 +228,29 @@ import Footer from "../../../components/Footer.astro";
       }
     });
 
-    list.addEventListener('dragstart', e => {
+    list?.addEventListener('dragstart', e => {
       if (!e.target) return;
-      
       const element = e.target as HTMLElement;
       const idAttr = element.dataset.id;
       if (idAttr) {
         draggedId = Number(idAttr);
       }
     });
-    list.addEventListener('dragover', e => {
+    list?.addEventListener('dragover', e => {
       e.preventDefault();
     });
-    list.addEventListener('drop', e => {
+    list?.addEventListener('drop', e => {
       e.preventDefault();
       if (!e.target) return;
-      
       const target = (e.target as Element).closest('li');
       if (!target) return;
-      
       const targetIdAttr = (target as HTMLElement).dataset.id;
       if (!targetIdAttr || draggedId === null) return;
-      
       const targetId = Number(targetIdAttr);
       if (isNaN(targetId) || targetId === draggedId) return;
-      
       const srcIndex = tasks.findIndex(t => t.id === draggedId);
       const targetIndex = tasks.findIndex(t => t.id === targetId);
-      
       if (srcIndex === -1 || targetIndex === -1) return;
-      
       tasks.splice(targetIndex, 0, tasks.splice(srcIndex, 1)[0]);
       save();
       render();
@@ -262,7 +268,7 @@ import Footer from "../../../components/Footer.astro";
       });
     });
 
-    categoryFilter.addEventListener('change', () => {
+    categoryFilter?.addEventListener('change', () => {
       currentCategory = (categoryFilter as HTMLSelectElement).value;
       render();
     });
