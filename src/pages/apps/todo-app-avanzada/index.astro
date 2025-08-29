@@ -58,6 +58,26 @@ import Footer from "../../../components/Footer.astro";
     </div>
   </main>
   <Footer />
+  <style>
+    /* Custom select arrow styling with higher specificity */
+    #todo-category,
+    #category-filter {
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+      background-position: right 8px center !important;
+      background-repeat: no-repeat !important;
+      background-size: 16px 16px !important;
+      padding-right: 32px !important;
+    }
+    
+    /* Dark mode arrow with higher specificity */
+    :global(.dark) #todo-category,
+    :global(.dark) #category-filter {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23cccccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    }
+  </style>
   <script>
     const form = document.getElementById('todo-form');
     const input = document.getElementById('todo-input');
@@ -67,27 +87,70 @@ import Footer from "../../../components/Footer.astro";
     const stats = document.getElementById('stats');
     const categoryFilter = document.getElementById('category-filter');
 
-    let tasks = JSON.parse(localStorage.getItem('advanced-todos') || '[]');
+    // Null checks for DOM elements
+    if (!form || !input || !categorySelect || !list || !stats || !categoryFilter) {
+      console.error('Required DOM elements not found');
+      return;
+    }
+
+    // Type definitions
+    interface Task {
+      id: number;
+      text: string;
+      category: string;
+      completed: boolean;
+    }
+
+    let tasks: Task[] = [];
+    try {
+      const storedTasks = localStorage.getItem('advanced-todos');
+      const parsedTasks = storedTasks ? JSON.parse(storedTasks) : [];
+      // Validate task structure
+      tasks = Array.isArray(parsedTasks) ? parsedTasks.filter(task => 
+        task && 
+        typeof task.id === 'number' && 
+        typeof task.text === 'string' && 
+        typeof task.category === 'string' && 
+        typeof task.completed === 'boolean'
+      ) : [];
+    } catch (error) {
+      console.error('Error loading tasks from localStorage:', error);
+      tasks = [];
+    }
     let currentFilter = 'all';
     let currentCategory = 'all';
-    let draggedId = null;
+    let draggedId: number | null = null;
 
     function save() {
-      localStorage.setItem('advanced-todos', JSON.stringify(tasks));
+      try {
+        localStorage.setItem('advanced-todos', JSON.stringify(tasks));
+      } catch (error) {
+        console.error('Error saving tasks to localStorage:', error);
+      }
+    }
+
+    function escapeHtml(text: string): string {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
     }
 
     function updateCategoryOptions() {
-      const categories = Array.from(new Set(tasks.map(t => t.category)));
+      if (!categoryFilter) return;
+      
+      const categories = Array.from(new Set(tasks.map(t => t.category?.toString() || 'General')));
       categoryFilter.innerHTML = '<option value="all">Todas las categorías</option>';
       categories.forEach(cat => {
         const opt = document.createElement('option');
-        opt.value = cat;
-        opt.textContent = cat;
+        opt.value = String(cat);
+        opt.textContent = String(cat);
         categoryFilter.appendChild(opt);
       });
     }
 
     function render() {
+      if (!list || !stats) return;
+      
       list.innerHTML = '';
       const filtered = tasks.filter(t => {
         const statusOk =
@@ -101,8 +164,8 @@ import Footer from "../../../components/Footer.astro";
         const li = document.createElement('li');
         li.className = 'flex items-center gap-2 p-2 rounded bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border';
         li.draggable = true;
-        li.dataset.id = task.id;
-        li.innerHTML = `\n          <input type="checkbox" class="checkbox" ${task.completed ? 'checked' : ''}/>\n          <span class="flex-1 ${task.completed ? 'line-through text-light-muted dark:text-dark-muted' : ''}">${task.text}</span>\n          <span class="text-xs px-2 py-1 rounded bg-secondary-500 text-white">${task.category}</span>\n          <button class="delete text-error-500">✕</button>\n        `;
+        li.dataset.id = task.id.toString();
+        li.innerHTML = `\n          <input type="checkbox" class="checkbox" ${task.completed ? 'checked' : ''}/>\n          <span class="flex-1 ${task.completed ? 'line-through text-light-muted dark:text-dark-muted' : ''}">${escapeHtml(task.text)}</span>\n          <span class="text-xs px-2 py-1 rounded bg-secondary-500 text-white">${escapeHtml(task.category)}</span>\n          <button class="delete text-error-500">✕</button>\n        `;
         list.appendChild(li);
       });
       stats.textContent = `${tasks.filter(t => t.completed).length}/${tasks.length} completadas`;
@@ -111,25 +174,41 @@ import Footer from "../../../components/Footer.astro";
 
     form.addEventListener('submit', e => {
       e.preventDefault();
-      const text = input.value.trim();
-      if (!text) return;
-      tasks.push({ id: Date.now(), text, category: categorySelect.value, completed: false });
-      input.value = '';
+      if (!input || !categorySelect) return;
+      
+      const text = (input as HTMLInputElement).value.trim();
+      if (!text || text.length > 500) return; // Prevent empty or overly long tasks
+      
+      const category = (categorySelect as HTMLSelectElement).value;
+      if (!category) return;
+      
+      tasks.push({ id: Date.now(), text, category, completed: false });
+      (input as HTMLInputElement).value = '';
       save();
       render();
     });
 
     list.addEventListener('click', e => {
-      const li = e.target.closest('li');
+      if (!e.target) return;
+      
+      const li = (e.target as Element).closest('li');
       if (!li) return;
-      const id = Number(li.dataset.id);
-      if (e.target.classList.contains('checkbox')) {
+      
+      const idAttr = li.dataset.id;
+      if (!idAttr) return;
+      
+      const id = Number(idAttr);
+      if (isNaN(id)) return;
+      
+      if ((e.target as Element).classList.contains('checkbox')) {
         const task = tasks.find(t => t.id === id);
-        task.completed = e.target.checked;
-        save();
-        render();
+        if (task) {
+          task.completed = (e.target as HTMLInputElement).checked;
+          save();
+          render();
+        }
       }
-      if (e.target.classList.contains('delete')) {
+      if ((e.target as Element).classList.contains('delete')) {
         tasks = tasks.filter(t => t.id !== id);
         save();
         render();
@@ -137,19 +216,35 @@ import Footer from "../../../components/Footer.astro";
     });
 
     list.addEventListener('dragstart', e => {
-      draggedId = Number(e.target.dataset.id);
+      if (!e.target) return;
+      
+      const element = e.target as HTMLElement;
+      const idAttr = element.dataset.id;
+      if (idAttr) {
+        draggedId = Number(idAttr);
+      }
     });
     list.addEventListener('dragover', e => {
       e.preventDefault();
     });
     list.addEventListener('drop', e => {
       e.preventDefault();
-      const target = e.target.closest('li');
+      if (!e.target) return;
+      
+      const target = (e.target as Element).closest('li');
       if (!target) return;
-      const targetId = Number(target.dataset.id);
-      if (targetId === draggedId) return;
+      
+      const targetIdAttr = (target as HTMLElement).dataset.id;
+      if (!targetIdAttr || draggedId === null) return;
+      
+      const targetId = Number(targetIdAttr);
+      if (isNaN(targetId) || targetId === draggedId) return;
+      
       const srcIndex = tasks.findIndex(t => t.id === draggedId);
       const targetIndex = tasks.findIndex(t => t.id === targetId);
+      
+      if (srcIndex === -1 || targetIndex === -1) return;
+      
       tasks.splice(targetIndex, 0, tasks.splice(srcIndex, 1)[0]);
       save();
       render();
@@ -157,7 +252,10 @@ import Footer from "../../../components/Footer.astro";
 
     filters.forEach(btn => {
       btn.addEventListener('click', () => {
-        currentFilter = btn.dataset.filter;
+        const filterValue = (btn as HTMLElement).dataset.filter;
+        if (!filterValue) return;
+        
+        currentFilter = filterValue;
         filters.forEach(b => b.classList.remove('bg-secondary-500', 'text-white'));
         btn.classList.add('bg-secondary-500', 'text-white');
         render();
@@ -165,7 +263,7 @@ import Footer from "../../../components/Footer.astro";
     });
 
     categoryFilter.addEventListener('change', () => {
-      currentCategory = categoryFilter.value;
+      currentCategory = (categoryFilter as HTMLSelectElement).value;
       render();
     });
 
