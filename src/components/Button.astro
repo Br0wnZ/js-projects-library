@@ -38,14 +38,15 @@ const sizeClasses = {
 const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 
 const Element = href ? 'a' : 'button';
+const isExternal = href ? /^https?:\/\//.test(href) : false;
 ---
 
-<Element 
+<Element
   class={classes}
   href={href}
   type={!href ? type : undefined}
-  target={href ? '_blank' : undefined}
-  rel={href ? 'noopener noreferrer' : undefined}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
   {...props}
 >
   <slot />

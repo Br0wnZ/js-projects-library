@@ -1,45 +1,44 @@
 ---
+import Layout from "../../../layouts/Layout.astro";
+import Header from "../../../components/Header.astro";
+import Footer from "../../../components/Footer.astro";
 ---
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora Interactiva</title>
-</head>
-<body class="min-h-screen bg-light-bg dark:bg-dark-bg flex items-center justify-center p-4">
-  <a href="/" class="absolute top-4 left-4 text-primary-600 dark:text-primary-400 font-medium underline">Inicio</a>
-  <main class="w-full max-w-sm sm:max-w-md bg-light-surface dark:bg-dark-surface rounded-2xl shadow-lg p-4 sm:p-6">
-    <div id="display" class="mb-4 h-16 sm:h-20 text-right text-3xl sm:text-4xl font-mono p-2 rounded bg-light-border/30 dark:bg-dark-border/30 flex items-end justify-end" aria-live="polite">0</div>
-    <div class="grid grid-cols-4 gap-2 sm:gap-3">
-      <button id="clear" class="col-span-2 py-3 sm:py-4 rounded-lg bg-error-500 hover:bg-error-600 text-white font-semibold" aria-label="Limpiar pantalla">C</button>
-      <button data-op="/" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Dividir">÷</button>
-      <button data-op="*" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Multiplicar">×</button>
+<Layout title="Calculadora Interactiva - Vanilla JS Library">
+  <Header />
+  <main class="flex-1 p-8 pt-12 flex items-center justify-center">
+    <div class="w-full max-w-sm sm:max-w-md bg-light-surface dark:bg-dark-surface rounded-2xl shadow-lg p-4 sm:p-6">
+      <div id="display" class="mb-4 h-16 sm:h-20 text-right text-3xl sm:text-4xl font-mono p-2 rounded bg-light-border/30 dark:bg-dark-border/30 flex items-end justify-end" aria-live="polite">0</div>
+      <div class="grid grid-cols-4 gap-2 sm:gap-3">
+        <button id="clear" class="col-span-2 py-3 sm:py-4 rounded-lg bg-error-500 hover:bg-error-600 text-white font-semibold" aria-label="Limpiar pantalla">C</button>
+        <button data-op="/" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Dividir">÷</button>
+        <button data-op="*" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Multiplicar">×</button>
 
-      <button data-number="7" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">7</button>
-      <button data-number="8" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">8</button>
-      <button data-number="9" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">9</button>
-      <button data-op="-" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Restar">−</button>
+        <button data-number="7" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">7</button>
+        <button data-number="8" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">8</button>
+        <button data-number="9" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">9</button>
+        <button data-op="-" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Restar">−</button>
 
-      <button data-number="4" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">4</button>
-      <button data-number="5" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">5</button>
-      <button data-number="6" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">6</button>
-      <button data-op="+" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Sumar">+</button>
+        <button data-number="4" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">4</button>
+        <button data-number="5" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">5</button>
+        <button data-number="6" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">6</button>
+        <button data-op="+" class="py-3 sm:py-4 rounded-lg bg-secondary-500 hover:bg-secondary-600 text-white font-semibold" aria-label="Sumar">+</button>
 
-      <button data-number="1" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">1</button>
-      <button data-number="2" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">2</button>
-      <button data-number="3" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">3</button>
-      <button id="equal" class="row-span-2 py-3 sm:py-4 rounded-lg bg-primary-500 hover:bg-primary-600 text-white font-semibold" aria-label="Igual">=</button>
+        <button data-number="1" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">1</button>
+        <button data-number="2" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">2</button>
+        <button data-number="3" class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">3</button>
+        <button id="equal" class="row-span-2 py-3 sm:py-4 rounded-lg bg-primary-500 hover:bg-primary-600 text-white font-semibold" aria-label="Igual">=</button>
 
-      <button data-number="0" class="col-span-2 py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">0</button>
-      <button data-number="." class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold" aria-label="Punto decimal">.</button>
+        <button data-number="0" class="col-span-2 py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold">0</button>
+        <button data-number="." class="py-3 sm:py-4 rounded-lg bg-light-bg dark:bg-dark-bg hover:bg-light-border dark:hover:bg-dark-border font-semibold" aria-label="Punto decimal">.</button>
+      </div>
+
+      <section class="mt-6" aria-labelledby="history-heading">
+        <h2 id="history-heading" class="text-lg font-semibold text-light-text dark:text-dark-text mb-2">Historial</h2>
+        <ul id="history" class="max-h-40 overflow-y-auto space-y-1 text-sm text-light-muted dark:text-dark-muted"></ul>
+      </section>
     </div>
-
-    <section class="mt-6" aria-labelledby="history-heading">
-      <h2 id="history-heading" class="text-lg font-semibold text-light-text dark:text-dark-text mb-2">Historial</h2>
-      <ul id="history" class="max-h-40 overflow-y-auto space-y-1 text-sm text-light-muted dark:text-dark-muted"></ul>
-    </section>
   </main>
-
+  <Footer />
   <script>
     const display = document.getElementById('display');
     const historyList = document.getElementById('history');
@@ -161,5 +160,4 @@
 
     loadHistory();
   </script>
-</body>
-</html>
+</Layout>
